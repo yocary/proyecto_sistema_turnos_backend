@@ -21,4 +21,4 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Establece el comando para ejecutar la aplicación con opciones de memoria
-ENTRYPOINT ["java", "-Xms128m", "-Xmx256m", "-XX:+UseG1GC", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Xms64m", "-Xmx128m", "-XX:+UseG1GC", "-jar", "app.jar"]
