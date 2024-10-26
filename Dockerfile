@@ -20,5 +20,5 @@ WORKDIR /app
 # Copia el jar generado al contenedor
 COPY --from=build /app/target/*.jar app.jar
 
-# Establece el comando para ejecutar la aplicación
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Establece el comando para ejecutar la aplicación con opciones de memoria
+ENTRYPOINT ["java", "-Xms128m", "-Xmx256m", "-XX:+UseG1GC", "-jar", "app.jar"]
