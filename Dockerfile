@@ -1,5 +1,5 @@
-# Usa una imagen base de Java
-FROM openjdk:8-jdk-alpine
+# Usa una imagen base de Maven
+FROM maven:3.8.1-openjdk-8 as build
 
 # Establece el directorio de trabajo
 WORKDIR /app
@@ -9,10 +9,16 @@ COPY pom.xml .
 COPY src ./src
 
 # Compila la aplicación
-RUN ./mvnw package -DskipTests
+RUN mvn package -DskipTests
+
+# Usa una imagen base de Java para la ejecución
+FROM openjdk:8-jdk-alpine
+
+# Establece el directorio de trabajo
+WORKDIR /app
 
 # Copia el jar generado al contenedor
-COPY target/*.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 # Establece el comando para ejecutar la aplicación
 ENTRYPOINT ["java", "-jar", "app.jar"]
